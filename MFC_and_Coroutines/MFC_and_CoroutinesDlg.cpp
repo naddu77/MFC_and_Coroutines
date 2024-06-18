@@ -109,14 +109,18 @@ afx_msg LRESULT CMFCandCoroutinesDlg::OnUserCoroutine(WPARAM wParam, LPARAM lPar
 FireAndForget CMFCandCoroutinesDlg::TestCoroutine()
 {
 	auto print_thread_id{ [this](std::wstring_view msg) {
-		AfxMessageBox(std::format(L"{}\nThread ID: {}\n", msg, std::this_thread::get_id()).c_str());
+		std::wstringstream ss;
+
+		ss << std::this_thread::get_id();
+
+		AfxMessageBox(std::format(L"{}\nThread ID: {}\n", msg, ss.str()).c_str());
 	} };
 
 	print_thread_id(L"Start a coroutine.");
 
 	co_await ResumeBackground();
 
-	print_thread_id(L"Running in the backgound for 5 seconds.");
+	print_thread_id(L"Running in the background for 5 seconds.");
 
 	using namespace std::chrono_literals;
 
